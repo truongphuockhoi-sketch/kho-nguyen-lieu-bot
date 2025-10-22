@@ -23,7 +23,6 @@ def search_material(keyword):
         keyword = str(keyword).strip().lower()
         
         print(f"🔍 Tìm kiếm: '{keyword}'")
-        print(f"📊 Tổng số dòng dữ liệu: {len(df)}")
         
         # Tìm kiếm LINH HOẠT theo TÊN
         if keyword == "test":
@@ -66,6 +65,11 @@ def search_material(keyword):
         print(f"❌ Lỗi: {str(e)}")
         return f"⚠️ Lỗi hệ thống: {str(e)}"
 
+# 🎯 QUAN TRỌNG: Thêm cả POST method cho route /
+@app.route("/", methods=['GET', 'POST'])
+def home():
+    return "✅ Bot Kho Nguyên Liệu - Phiên bản Google Sheets"
+
 # Webhook cho Line Bot
 @app.route("/callback", methods=['POST'])
 def callback():
@@ -83,10 +87,6 @@ def handle_message(event):
     print(f"📨 Tin nhắn: {user_message}")
     reply_text = search_material(user_message)
     line_bot_api.reply_message(event.reply_token, TextSendMessage(text=reply_text))
-
-@app.route("/")
-def home():
-    return "✅ Bot Kho Nguyên Liệu - Phiên bản Google Sheets"
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
